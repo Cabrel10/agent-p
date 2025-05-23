@@ -1,0 +1,84 @@
+# 1. Ignorer tout dans ce répertoire racine par défaut
+/*
+
+# Exceptions pour la racine :
+# Ne pas ignorer le fichier .gitignore lui-même
+!/.gitignore
+# Ne pas ignorer le dossier du projet Morningstar
+!/Morningstar/
+
+# 2. À l'intérieur de Morningstar/, ignorer tout par défaut
+/Morningstar/*
+
+# 3. Débloquer les fichiers essentiels à la racine de /Morningstar/
+!/Morningstar/train_tech_autoencoder.py
+!/Morningstar/train_final_contrastive_model.py
+!/Morningstar/resave_encoder_model.py
+!/Morningstar/inspect_encoder_model.py
+!/Morningstar/train_rl_agent.py
+!/Morningstar/backtest_rl_agent.py
+!/Morningstar/run_trading.py
+!/Morningstar/analyze_backtest_results.py
+
+# 4. Débloquer les sous-dossiers et fichiers spécifiques requis dans /Morningstar/
+
+# /Morningstar/models/
+!/Morningstar/models/
+/Morningstar/models/*
+!/Morningstar/models/sprint2_contrastive_encoder/
+/Morningstar/models/sprint2_contrastive_encoder/*
+!/Morningstar/models/sprint2_contrastive_encoder/contrastive_encoder_model_v2.keras
+!/Morningstar/models/sprint2_contrastive_encoder/model_config.json
+!/Morningstar/models/sprint2_contrastive_encoder/scalers.pkl
+!/Morningstar/models/sprint2_contrastive_encoder/data_processing_metadata.json
+!/Morningstar/models/sprint2_contrastive_encoder/training_history.csv
+
+# /Morningstar/rl_environment/
+!/Morningstar/rl_environment/
+/Morningstar/rl_environment/*
+!/Morningstar/rl_environment/multi_asset_env.py
+!/Morningstar/rl_environment/market_env.py
+!/Morningstar/rl_environment/__init__.py
+
+# /Morningstar/monolith_implementation/
+!/Morningstar/monolith_implementation/
+/Morningstar/monolith_implementation/*
+!/Morningstar/monolith_implementation/monolith_model.py
+!/Morningstar/monolith_implementation/contrastive_utils.py
+!/Morningstar/monolith_implementation/inference_monolith.py
+!/Morningstar/monolith_implementation/demo_monolith.py
+!/Morningstar/monolith_implementation/__init__.py
+
+# /Morningstar/config/
+!/Morningstar/config/
+/Morningstar/config/*
+!/Morningstar/config/config.py
+!/Morningstar/config/__init__.py
+
+# /Morningstar/trained_models/
+!/Morningstar/trained_models/
+/Morningstar/trained_models/*
+!/Morningstar/trained_models/best_model.zip
+!/Morningstar/trained_models/final_model.zip
+
+# /Morningstar/ultimate/
+!/Morningstar/ultimate/
+/Morningstar/ultimate/*
+!/Morningstar/ultimate/evaluate_parquet.py
+!/Morningstar/ultimate/improve_model.py
+!/Morningstar/ultimate/__init__.py
+!/Morningstar/ultimate/data/
+/Morningstar/ultimate/data/*
+!/Morningstar/ultimate/data/processed/
+/Morningstar/ultimate/data/processed/*
+!/Morningstar/ultimate/data/processed/multi_crypto_dataset.parquet
+
+# Quelques exclusions communes et légères
+**/__pycache__/
+*.py[cod]
+*.so
+.env
+.venv
+.DS_Store
+*~
+*.sw[op]
