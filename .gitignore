@@ -71,7 +71,7 @@
 /Morningstar/ultimate/data/*
 !/Morningstar/ultimate/data/processed/
 /Morningstar/ultimate/data/processed/*
-!/Morningstar/ultimate/data/processed/multi_crypto_dataset.parquet
+
 
 # Quelques exclusions communes et légères
 **/__pycache__/
