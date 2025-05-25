@@ -1,0 +1,222 @@
+# Configuration centralisée pour le projet Morningstar
+
+# Chemin racine du projet
+project_root: "/home/morningstar/Desktop/crypto_robot/Morningstar"
+
+# Gestion des ressources système
+resources:
+  cpu_cores: 2            # Nombre de cœurs CPU à utiliser
+  memory_limit: 6         # Limite de mémoire en GB
+  gpu_enabled: false      # Utiliser le GPU ou non
+  tf_intra_op_threads: 2  # Threads TensorFlow intra-op
+  tf_inter_op_threads: 2  # Threads TensorFlow inter-op
+
+# Chemins relatifs au project_root
+paths:
+  # Données
+  data_base_dir: "ultimate/data"
+  raw_csv_dir: "ultimate/data/raw"
+  processed_dir: "ultimate/data/processed"
+  market_features_dir: "ultimate/data/processed/market_features"
+  merged_features_file: "ultimate/data/processed/market_features/all_assets_features_merged.parquet"
+  dataset_train_rl_legacy: "ultimate/data/raw/market/features/dataset_train_rl.parquet"
+
+  # Modèles
+  models_base_dir: "models"
+  tech_autoencoder_dir: "models/tech_autoencoder"
+  tech_autoencoder_model: "models/tech_autoencoder/encoder_model.h5"
+  tech_autoencoder_full_model: "models/tech_autoencoder/autoencoder_model.h5"
+  tech_autoencoder_model_keras: "models/tech_autoencoder/encoder_model.keras"  # Version legacy pour compatibilité
+  tech_autoencoder_scaler: "models/tech_autoencoder/scaler_technical_light.pkl"
+  tech_autoencoder_config: "models/tech_autoencoder/model_config.json"
+
+  retrained_encoder_dir: "models/retrained_encoder"
+  retrained_encoder_model: "models/retrained_encoder/encoder_model.h5"
+  retrained_encoder_model_keras: "models/retrained_encoder/encoder_model.keras"  # Version legacy pour compatibilité
+  retrained_encoder_scaler: "models/retrained_encoder/scaler_technical.pkl"
+  
+  contrastive_encoder_dir: "models/sprint2_contrastive_encoder"
+  contrastive_encoder_model: "models/sprint2_contrastive_encoder/contrastive_encoder_model.h5"
+  contrastive_encoder_model_keras: "models/sprint2_contrastive_encoder/contrastive_encoder_model.keras"  # Version legacy
+  contrastive_encoder_artifacts_dir: "models/sprint2_contrastive_encoder"
+  
+  monolith_autoencoder_final_model: "models/sprint1_autoencoder/autoencoder_monolith_model.h5"
+  monolith_autoencoder_final_model_keras: "models/sprint1_autoencoder/autoencoder_monolith_model.keras"  # Version legacy
+
+  rl_agent_model_dir: "models"
+  rl_agent_model_name: "rl_agent_sb3_dqn_multiasset"
+
+  # Logs
+  logs_base_dir: "logs"
+  rl_agent_logs_dir: "logs/sb3_rl_agent_multiasset_logs"
+  optuna_logs_dir: "logs/optuna_sb3_rl_agent_logs"
+
+  # Rapports
+  backtest_reports_dir: "reports/backtests"
+
+# Paramètres pour le feature engineering
+feature_engineering:
+  include_llm: false
+  sma_short_window: 10
+  sma_long_window: 50
+  rsi_window: 14
+  bb_window: 20
+  bb_std: 2
+
+# Paramètres pour l'entraînement RL
+rl_training:
+  total_timesteps: 10000       # Réduit pour tests plus rapides
+  learning_starts: 500         # Réduit pour tests plus rapides
+  buffer_size: 50000           # Réduit pour consommer moins de mémoire
+  batch_size: 32               # Réduit pour consommer moins de mémoire
+  learning_rate: 0.001
+  gamma: 0.99
+  exploration_fraction: 0.3
+  exploration_final_eps: 0.05
+  target_update_interval: 500  # Réduit pour tests plus rapides
+  fc_layer_params: [64, 32]    # Réduit pour consommer moins de mémoire
+  initial_capital: 15.0
+  transaction_cost_pct: 0.001
+  encoded_feature_dim: 16      # Dimension de sortie de l'encodeur
+  num_assets_to_trade: 5       # Nombre d'actifs à trader
+  # Liste des colonnes techniques utilisées pour l'encodeur (42 colonnes exactement, correspondant à ce que le scaler attend)
+  technical_feature_columns_for_encoder:
+    # 38 indicateurs techniques standards
+    - 'SMA_short'
+    - 'SMA_long'
+    - 'EMA_short'
+    - 'EMA_long'
+    - 'RSI'
+    - 'MACD'
+    - 'MACDs'
+    - 'MACDh'
+    - 'BBU'
+    - 'BBM'
+    - 'BBL'
+    - 'ATR'
+    - 'STOCHk'
+    - 'STOCHd'
+    - 'ADX'
+    - 'CCI'
+    - 'Momentum'
+    - 'ROC'
+    - 'Williams_%R'
+    - 'TRIX'
+    - 'Ultimate_Osc'
+    - 'DPO'
+    - 'OBV'
+    - 'VWMA'
+    - 'CMF'
+    - 'MFI'
+    - 'Parabolic_SAR'
+    - 'Ichimoku_Tenkan'
+    - 'Ichimoku_Kijun'
+    - 'Ichimoku_SenkouA'
+    - 'Ichimoku_SenkouB'
+    - 'Ichimoku_Chikou'
+    - 'KAMA'
+    - 'VWAP'
+    - 'STOCHRSIk'
+    - 'CMO'
+    - 'PPO'
+    - 'FISHERt'
+    # 4 features HMM pour atteindre les 42 features attendues par le scaler
+    - 'hmm_regime'
+    - 'hmm_prob_0'
+    - 'hmm_prob_1'
+    - 'hmm_prob_2'
+
+# Paramètres pour l'entraînement des encodeurs
+tech_autoencoder_train:
+  encoding_dim: 16
+  epochs: 50
+  batch_size: 64        # Réduit pour consommer moins de mémoire
+  learning_rate: 0.001
+  validation_split: 0.2
+
+contrastive_encoder_train:
+  learning_rate: 0.001556
+  dropout_rate: 0.1026
+  l2_reg: 0.0000722
+  dense_units: 32
+  lstm_units: 64
+  transformer_blocks: 2        # Réduit pour moins de calculs
+  transformer_heads: 4         # Réduit pour moins de calculs
+  transformer_ff_dim_factor: 2
+  batch_size: 32               # Réduit pour consommer moins de mémoire
+  latent_dim: 64               # Réduit pour consommer moins de mémoire
+  contrastive_temperature: 0.0555
+  augmentation_type: "scaling"
+  epochs: 20                   # Réduit pour tests plus rapides
+
+# Configuration pour les scripts spécifiques
+# Paramètres pour les scripts spécifiques
+scripts:
+  train_rl_agent:
+    default_encoder_key: "retrained_encoder_model"
+    default_artifacts_key: "retrained_encoder_dir"
+  backtest_rl_agent:
+    default_initial_capital: 10000
+    default_report_name: "backtest_report.csv"
+    default_figure_name: "portfolio_value.png"
+
+# Paramètres de trading
+trading:
+  min_order_value: 5.0
+  transaction_fee_fixed: 0.1
+  transaction_cost_pct: 0.001
+  atr_period: 14
+  risk_factor: 2.0
+  # Définition des paliers (tiers) de capital
+  tiers:
+    - low: 0
+      high: 10
+      max_positions: 1
+      allocation_frac: 1.0  # 100% d'allocation pour le premier palier
+      reward_pos_mult: 1.0
+      reward_neg_mult: 1.0
+    - low: 10
+      high: 30
+      max_positions: 1
+      allocation_frac: 1.0  # 100% d'allocation pour le deuxième palier
+      reward_pos_mult: 1.0
+      reward_neg_mult: 1.0
+    - low: 30
+      high: 75
+      max_positions: 2
+      allocation_frac: 0.8  # 80% d'allocation
+      reward_pos_mult: 1.2
+      reward_neg_mult: 1.1
+    - low: 75
+      high: 250
+      max_positions: 3
+      allocation_frac: 0.5  # 50% d'allocation
+      reward_pos_mult: 1.5
+      reward_neg_mult: 1.2
+    - low: 250
+      high: 500
+      max_positions: 4
+      allocation_frac: 0.2  # 20% d'allocation
+      reward_pos_mult: 2.0
+      reward_neg_mult: 1.5
+    - low: 500
+      high: 1000
+      max_positions: 5
+      allocation_frac: 0.1  # 10% d'allocation
+      reward_pos_mult: 3.0
+      reward_neg_mult: 2.0
+    - low: 1000
+      high: 1000000000
+      max_positions: 5
+      allocation_frac: 0.01  # 1% d'allocation pour le dernier palier
+      reward_pos_mult: 3.0
+      reward_neg_mult: 2.0
+
+# Paramètres pour les ordres
+order:
+  expiry_default: 10
+  penalties:
+    limit_expiry: -0.1
+    stop_loss_expiry: -0.1
+    take_profit_expiry: -0.05
+    trailing_stop_expiry: -0.05
