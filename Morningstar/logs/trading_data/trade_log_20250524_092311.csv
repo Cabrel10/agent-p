@@ -1,0 +1,4 @@
+step,asset,action,order_type,price,quantity,value,fee,capital_after,pnl,holding_duration,winning_trade,order_id,expiry,cumulative_pnl,order_market,order_limit,order_stop_loss,order_take_profit,order_trailing_stop
+1,asset_0,BUY,MARKET,1.0,40.0,40.0,0.14,59.86,,,,,,0.0,True,False,False,False,False
+2,asset_0,SELL,MARKET,1.0,40.0,40.0,0.14,99.72,-0.14,1.0,False,,,-0.14,True,False,False,False,False
+3,asset_1,CREATE_LIMIT,,2.0,,,,,,,,0.0,8.0,-0.14,False,True,False,False,False

@@ -1,0 +1,54 @@
+[Unit]
+Description=Morningstar Telegram Bot
+Requires=docker.service
+After=network.target docker.service
+
+[Service]
+User=appuser # Remplacez par l'utilisateur qui doit lancer la commande docker (ou root si nécessaire, mais moins sécurisé)
+Group=appgroup # Remplacez par le groupe de l'utilisateur
+
+# Variables d'environnement pour le conteneur Docker
+# Ces variables peuvent être chargées depuis un fichier avec EnvironmentFile=
+# EnvironmentFile=/etc/morningstar/telegram_bot.env
+# Ou définies directement ici (moins sécurisé pour les secrets)
+# Environment="TELEGRAM_BOT_TOKEN=YOUR_ACTUAL_TOKEN"
+# Environment="TELEGRAM_CHAT_ID=YOUR_ACTUAL_CHAT_ID"
+# Environment="ALLOWED_TELEGRAM_CHAT_IDS=YOUR_CHAT_ID_OR_IDS"
+# Environment="CONFIG_PATH=/app/config/config.yaml" # Exemple si config.yaml est dans l'image
+# Environment="SIGNAL_CACHE_PATH=/app/data/cache/signal_cache.parquet" # Chemin DANS le conteneur
+# Environment="FEATURE_NAMES_PATH=/app/outputs/enhanced/feature_names.json" # Chemin DANS le conteneur
+# Environment="MODEL_PATH=/app/outputs/enhanced/best_model.keras" # Chemin DANS le conteneur
+
+# Répertoire de travail (optionnel, car la commande docker spécifie souvent son propre contexte)
+# WorkingDirectory=/opt/morningstar_project # Répertoire sur l'hôte où se trouvent potentiellement les volumes
+
+# Commande pour arrêter proprement le conteneur existant s'il tourne
+ExecStartPre=-/usr/bin/docker stop morningstar_telegram_bot
+ExecStartPre=-/usr/bin/docker rm morningstar_telegram_bot
+
+# Commande pour lancer le conteneur Docker
+# Assurez-vous que l'image 'morningstar:latest' existe localement ou est tirée d'un registry.
+# Montez les volumes pour les données persistantes, modèles, configurations si elles ne sont pas dans l'image.
+ExecStart=/usr/bin/docker run --rm --name morningstar_telegram_bot \
+    -e TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN} \
+    -e TELEGRAM_CHAT_ID=${TELEGRAM_CHAT_ID} \
+    -e ALLOWED_TELEGRAM_CHAT_IDS=${ALLOWED_TELEGRAM_CHAT_IDS} \
+    # Exemple de montage de volumes (adaptez les chemins de l'hôte et du conteneur)
+    # -v /path/on/host/to/config.yaml:/app/config/config.yaml:ro \
+    # -v /path/on/host/to/signal_cache.parquet:/app/data/cache/signal_cache.parquet:ro \
+    # -v /path/on/host/to/feature_names.json:/app/outputs/enhanced/feature_names.json:ro \
+    # -v /path/on/host/to/best_model.keras:/app/outputs/enhanced/best_model.keras:ro \
+    # -v /path/on/host/to/live_status.json:/app/live_status.json \ # Si le bot doit lire/écrire ce fichier
+    morningstar:latest 
+    # Si le CMD du Dockerfile n'est pas "python telegram_bot.py", ajoutez-le ici:
+    # morningstar:latest python telegram_bot.py
+
+# Politique de redémarrage
+Restart=always
+RestartSec=10
+
+# Commande pour arrêter le conteneur
+ExecStop=/usr/bin/docker stop morningstar_telegram_bot
+
+[Install]
+WantedBy=multi-user.target

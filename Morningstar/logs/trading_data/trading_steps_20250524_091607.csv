@@ -1,0 +1,3 @@
+Step,Action,Asset,Price,Quantity,Value,Fee,PnL,Capital_After,Order_Type
+1,BUY,asset_0,1.0,40.0,40.0,0.14,,59.86,MARKET
+2,SELL,asset_0,1.0,40.0,40.0,0.14,-0.14,99.72,MARKET

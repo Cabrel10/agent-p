@@ -1,0 +1,2 @@
+step,asset,action,order_type,price,quantity,value,fee,capital_after,order_market,order_limit,order_stop_loss,order_take_profit,order_trailing_stop
+1,asset_0,BUY,MARKET,1.0,40.0,40.0,0.14,59.86,True,False,False,False,False

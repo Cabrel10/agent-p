@@ -1,0 +1,5 @@
+step,asset,action,price,order_id,expiry,order_type,quantity,value,fee,capital_before,capital_after,pnl,holding_duration,tier,cumulative_pnl,order_market,order_limit,order_stop_loss,order_take_profit,order_trailing_stop
+0,asset_1,CREATE_LIMIT,2.0,0.0,5.0,,,,,,,,,,0.0,False,True,False,False,False
+5,asset_2,BUY,3.0,,,MARKET,6.666666666666667,20.0,0.12000000000000001,100.0,79.88,0.0,0.0,0.0,0.0,True,False,False,False,False
+5,asset_2,CREATE_STOP_LOSS,3.0,1.0,15.0,,6.666666666666667,,,,,,,,0.0,False,False,True,False,False
+5,asset_2,CREATE_TAKE_PROFIT,3.0,2.0,15.0,,6.666666666666667,,,,,,,,0.0,False,False,False,True,False

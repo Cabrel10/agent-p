@@ -1,0 +1,15 @@
+{
+  "learning_rate": 8.801219609767359e-05,
+  "n_steps": 1712,
+  "batch_size": 228,
+  "n_epochs": 10,
+  "gamma": 0.988456629618887,
+  "gae_lambda": 0.8687106549717256,
+  "clip_range": 0.13845771805133197,
+  "position_size": 0.00788595973355035,
+  "stop_loss_pct": 0.0334019026098178,
+  "take_profit_pct": 0.0775337657380805,
+  "order_type": 0,
+  "slippage_tolerance": 0.004276588605075735,
+  "cot_weight": 0.8664836667552697
+}
